@@ -1,0 +1,46 @@
+body{
+    background-color: #EDE7F6;
+}
+div{
+    font-family: "Liberation Sans";
+}
+#mainContainer {
+    background-color: #E8EAF6;
+    padding: 20px 150px;
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    border-width: 1px;
+    border-color: #512DA8;
+    border-style: solid;
+}
+
+.book {
+    background-color: #311B92;
+    padding: 1px 1px 0 1px;
+}
+
+.book-cover {
+    background-color: #311B92;
+    padding: 0 0 1px 0;
+}
+
+.book-title {
+    background-color: #512DA8;
+    color: #E8EAF6;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.book-details{
+    background-color: #EDE7F6;
+    padding: 5px;
+    display: none;
+}
+
+
+
+
+
+
+
