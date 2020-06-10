@@ -8,8 +8,9 @@ $(() => {
     const $typeForm = $('input[name="type"]');
     const $idForm = $('input[name="id"]');
     const $addButton = $('#addButton');
-    const $editButton = $('#edit');
     const $sendButton = $('#send');
+    const $editButton = $('#edit');
+    const $cancelButton = $('#cancel');
     const $formDiv = $('#form-div');
 
     const readBooks = () => {
@@ -117,16 +118,13 @@ Type: ${response.type}`
     };
 
     const editBook = (bookId) => {
-        $sendButton.css('diplay', 'none');
-        $editButton.css('display', 'true');
+        $editButton.css('display', 'inline-block');
+        $sendButton.css('display', 'none');
         $formDiv.slideDown('fast');
-        console.log($sendButton);
-        console.log($editButton);
-        console.log('editBook done');
     }
 
     $addButton.on('click', () => {
-        $sendButton.css('diplay', 'true');
+        $sendButton.css('display', 'inline-block');
         $editButton.css('display', 'none');
         $formDiv.slideDown('fast');
     });
@@ -136,12 +134,10 @@ Type: ${response.type}`
         addBook();
     });
 
-    $cancelButton = $('#cancel');
     $cancelButton.on('click', (e) => {
         e.preventDefault();
         $formDiv.slideUp('fast');
     });
-
 
     const animateBlink = (id) => {
         const $animatedButton = $(`[data-book-id="${id}"]`);
