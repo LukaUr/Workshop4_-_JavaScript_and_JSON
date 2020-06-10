@@ -85,18 +85,14 @@ input[type="text"]{
     transition: 0.1s;
     border-radius: 2px;
 }
-.deleteButton:hover {
-    background-color: #ff0088;
-    color: #000000;
-}
 
-.editButton:hover {
-    background-color: #00ff88;
+.editButton:hover, .deleteButton:hover {
+    background-color: #aeb0d9;
     color: #000000;
 }
 
 .white {
-    background-color: #716ebf;
+    background-color: #e7e8f6;
 }
 
 .slowTransition {

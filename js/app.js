@@ -13,31 +13,63 @@ $(() => {
     const $cancelButton = $('#cancel');
     const $formDiv = $('#form-div');
 
-    const readBooks = () => {
+    const sendJSON = (method, bookId, data, output) => {
         $.ajax({
-            url: "http://localhost:8282/books/",
-            contentType: "application/json",
+            url: "http://localhost:8282/books/" + bookId,
+            data: data,
             dataType: "JSON",
-            method: "GET"
+            contentType: "application/json",
+            method: method
         }).done((response) => {
-            response.forEach((el) => createBookItem(el));
+            if (method === 'GET' && bookId !== '') {
+                if (output === 'detailsDiv') {
+                    const $bookDetailsDiv = $('[data-book-id="' + bookId + '"]').next('.book-details');
+                    let text = `Title: ${response.title}<br>Author: ${response.author}<br>
+Id: ${response.id}<br>ISBN: ${response.isbn}<br>Publisher: ${response.publisher}<br>
+Type: ${response.type}`
+                    $bookDetailsDiv.html(text);
+                    $bookDetailsDiv.slideToggle('fast');
+                } else if (output === 'form') {
+                    $titleForm.val(response.title);
+                    $authorForm.val(response.author);
+                    $isbnForm.val(response.isbn);
+                    $publisherForm.val(response.publisher);
+                    $typeForm.val(response.type);
+                    $idForm.val(response.id);
+                    $formDiv.slideDown('fast');
+                } else {
+                    console.log('coś poszło nie tak')
+                }
+            }
+            if (method === 'GET' && bookId === '') {
+                response.forEach((el) => createBookItem(el));
+            }
+            if (method === 'DELETE') {
+                animateBlink(bookId);
+                setTimeout(() => $(`[data-book-id="${bookId}"]`).parent().parent().remove(), 800)
+            }
+            if (method === 'POST') {
+                createBookItem(response);
+                animateBlink(response.id);
+                $formDiv.slideUp();
+            }
+            if (method === 'PUT') {
+                animateBlink(bookId);
+                const $bookDiv = $(`[data-book-id="${bookId}"]`);
+                $temp = $bookDiv.children();
+                $bookDiv.text($titleForm.val());
+                $bookDiv.append($temp);
+                $bookDiv.next('.book-details').empty().slideUp();
+
+                $formDiv.slideUp();
+            }
         })
     }
 
     const showBookDetails = (bookId) => {
         const $bookDetailsDiv = $('[data-book-id="' + bookId + '"]').next('.book-details');
         if ($bookDetailsDiv.is(':empty')) {
-            $.ajax({
-                url: "http://localhost:8282/books/" + bookId,
-                dataType: "JSON",
-                method: "GET"
-            }).done((response) => {
-                let text = `Title: ${response.title}<br>Author: ${response.author}<br>
-Id: ${response.id}<br>ISBN: ${response.isbn}<br>Publisher: ${response.publisher}<br>
-Type: ${response.type}`
-                $bookDetailsDiv.html(text);
-                $bookDetailsDiv.slideToggle('fast');
-            })
+            sendJSON('GET', bookId, null, 'detailsDiv');
         } else {
             $bookDetailsDiv.slideToggle('fast');
         }
@@ -73,7 +105,7 @@ Type: ${response.type}`
         $container.on('click', '.deleteButton', function (e) {
             e.stopPropagation();
             const bookID = $(this).parent().data('bookId');
-            deleteBook(bookID);
+            sendJSON('DELETE', bookID, '');
         })
     }
 
@@ -85,54 +117,41 @@ Type: ${response.type}`
         })
     }
 
-    const addBook = () => {
+    const getBookFromForm = () => {
         let book = {};
         book.title = $titleForm.val();
         book.author = $authorForm.val();
         book.isbn = $isbnForm.val();
         book.publisher = $publisherForm.val();
         book.type = $typeForm.val();
-        $.ajax({
-            url: "http://localhost:8282/books/",
-            data: JSON.stringify(book),
-            contentType: "application/json",
-            dataType: "JSON",
-            method: "POST"
-        }).done((response) => {
-            createBookItem(response);
-            animateBlink(response.id);
-            $formDiv.slideUp();
-        });
-    };
-
-    const deleteBook = (bookId) => {
-        $.ajax({
-            url: "http://localhost:8282/books/" + bookId,
-            contentType: "application/json",
-            dataType: "JSON",
-            method: "DELETE",
-        }).done((response) => {
-            animateBlink(bookId);
-            setTimeout(() => $(`[data-book-id="${bookId}"]`).parent().parent().remove(), 800)
-        });
+        book.id = $idForm.val();
+        return book;
     };
 
     const editBook = (bookId) => {
         $editButton.css('display', 'inline-block');
         $sendButton.css('display', 'none');
-        $formDiv.slideDown('fast');
+        sendJSON('GET', bookId, {}, 'form')
     }
 
     $addButton.on('click', () => {
         $sendButton.css('display', 'inline-block');
         $editButton.css('display', 'none');
+        $formDiv.find('input[type=text], input[type=number]').val("");
         $formDiv.slideDown('fast');
     });
 
     $sendButton.on('click', (e) => {
         e.preventDefault();
-        addBook();
+        const book = JSON.stringify(getBookFromForm());
+        sendJSON('POST', '', book);
     });
+
+    $editButton.on('click', (e) => {
+        e.preventDefault();
+        const book = getBookFromForm();
+        sendJSON('PUT', book.id, JSON.stringify(book));
+    })
 
     $cancelButton.on('click', (e) => {
         e.preventDefault();
@@ -146,12 +165,11 @@ Type: ${response.type}`
         for (let i = 0; i < blinksCount * 2; i++) {
             setTimeout(() => $animatedButton.toggleClass('white'), 200 * i);
         }
-        setTimeout($animatedButton.removeClass('slowTransition'), blinksCount * 400);
+        setTimeout(() => $animatedButton.removeClass('slowTransition'), blinksCount * 400);
     };
 
-    readBooks();
+    sendJSON('GET', '', {}); //fetch books
     addEventsOnBooks();
     addEventsOnDeleteButtons();
     addEventsOnEditButtons();
-
 })
