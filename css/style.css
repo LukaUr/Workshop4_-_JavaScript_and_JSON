@@ -1,11 +1,23 @@
-body{
-    background-color: #EDE7F6;
+
+body {
+    background-color: #e7e8f6;
 }
-div{
-    font-family: "Liberation Sans";
+
+div, a, input, .button {
+    font-family: "Liberation Sans", sans-serif;
+    color: #1e0f5e;
+    font-size: 16px;
 }
-#mainContainer {
-    background-color: #E8EAF6;
+
+input[type="text"]{
+    width: 70%;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+
+#mainContainer, #menu, #form-div {
+    background-color: #eeeef4;
     padding: 20px 150px;
     width: 700px;
     margin-left: auto;
@@ -13,6 +25,11 @@ div{
     border-width: 1px;
     border-color: #512DA8;
     border-style: solid;
+    margin-bottom: 4px;
+}
+
+#form-div {
+    display: none;
 }
 
 .book {
@@ -28,15 +45,66 @@ div{
 .book-title {
     background-color: #512DA8;
     color: #E8EAF6;
-    padding: 5px;
+    padding: 10px 5px;
     font-weight: bold;
+    transition: 0.1s;
 }
 
-.book-details{
-    background-color: #EDE7F6;
+.book-title:hover {
+    background-color: #6360c4;
+}
+
+.book-details {
+    background-color: #e7e8f6;
     padding: 5px;
     display: none;
 }
+
+.button {
+    margin-top: 4px;
+    padding: 10px 25px;
+    background-color: #e7e8f6;
+    text-decoration: none;
+    /*font-size: 16px;*/
+    border: #512DA8 2px solid;
+    transition: .1s;
+    display: inline-block;
+}
+
+.button:hover {
+    background-color: #c3c5e5;
+}
+
+.deleteButton, .editButton {
+    display: inline-block;
+    background-color: #e7e8f6;
+    padding: 2px 4px;
+    margin: -2px 10px 4px 0;
+    float: right;
+    cursor: pointer;
+    transition: 0.1s;
+    border-radius: 2px;
+}
+.deleteButton:hover {
+    background-color: #ff0088;
+    color: #000000;
+}
+
+.editButton:hover {
+    background-color: #00ff88;
+    color: #000000;
+}
+
+.white {
+    background-color: #716ebf;
+}
+
+.slowTransition {
+    transition: 0.2s;
+}
+
+
+
 
 
 

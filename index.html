@@ -8,9 +8,48 @@
 <body>
 
 <div id="mainContainer">
-
+    <div>
+        <a href="#" class="button" id="addButton">Add book</a>
+    </div>
 </div>
 
+<div id="form-div">
+    <form>
+        <label>
+            Title:<br>
+            <input type="text" name="title"><br>
+        </label>
+        <label>
+            Author:<br>
+            <input type="text" name="author"><br>
+        </label>
+        <label>
+            ISBN:<br>
+            <input type="text" name="isbn"><br>
+        </label>
+        <label>
+            Publisher:<br>
+            <input type="text" name="publisher"><br>
+        </label>
+        <label>
+            Type:<br>
+            <input type="text" name="type"><br>
+        </label>
+        <label>
+            <input type="number" name="id" hidden>
+        </label>
+        <label>
+            <br>
+            <input type="submit" value="Add" id="send" class="button">
+        </label>
+        <label>
+            <input type="submit" value="Edit" id="edit" class="button">
+        </label>
+        <label>
+            <input type="submit" value="Cancel" id="cancel" class="button">
+        </label>
+    </form>
+</div>
 
 <script
         src="https://code.jquery.com/jquery-3.5.1.min.js"
